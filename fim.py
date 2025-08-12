@@ -31,33 +31,33 @@ def parse_args():
 
 def cmd_init(args):
     """Create a new save and baseline manifest."""
-    save_manifest(db, build_manifest(root, workers, set(ignored_dirs)))
-    print(f"[ok] Baseline created: {db}")
+    save_manifest(args.db, build_manifest(args.root, args.workers, set(args.ignore_dirs)))
+    print(f"[ok] Baseline created: {args.db}")
     return 0
 
 def cmd_scan(args):
     """Scan the directory and compare to the baseline."""
-    old = load_manifest(db)
-    new = build_manifest(root, workers, set(ignored_dirs))
+    old = load_manifest(args.db)
+    new = build_manifest(args.root, args.workers, set(args.ignore_dirs))
     diff = diff_manifests(old, new)
     return print_report(diff)
 
 def cmd_update(args):
     """Update the baseline with the current scan."""
-    new = build_manifest(root, workers, set(ignored_dirs))
-    save_manifest(db, new)
-    print(f"[ok] Baseline updated: {db}")
+    new = build_manifest(args.root, args.workers, set(args.ignore_dirs))
+    save_manifest(args.db, new)
+    print(f"[ok] Baseline updated: {args.db}")
     return 0
 
 def main():
     """Main entry point for the CLI."""
     args = parse_args()
     if args.cmd == "init":
-        return cmd_init(args.root, args.db, args.workers, args.ignore_dirs)
+        return cmd_init(args)
     if args.cmd == "scan":
-        return cmd_scan(args.root, args.db, args.workers, args.ignore_dirs)
+        return cmd_scan(args)
     if args.cmd == "update":
-        return cmd_update(args.root, args.db, args.workers, args.ignore_dirs)
+        return cmd_update(args)
 
 if __name__ == "__main__":
     sys.exit(main())

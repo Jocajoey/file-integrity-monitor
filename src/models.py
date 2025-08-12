@@ -17,10 +17,10 @@ class Filerecord:
     mtime: float
     sha256: str
     
-    Manifest = Dict[str, Filerecord] #map relative paths to Filerecords
+Manifest = Dict[str, Filerecord] #map relative paths to Filerecords
     
-    @dataclass
-    class Diff:
+@dataclass
+class Diff:
         """Data class to store differences between two file records."""
         added: List[Filerecord]
         removed: List[Filerecord]

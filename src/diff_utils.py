@@ -12,15 +12,16 @@ from .models import FileRecord, Diff, Manifest
 
 def diff_manifests(old: Manifest, new: Manifest) -> Diff:
     """Compare two manifests and return the differences."""
-    added = [new[k] for k in new if k not in old]
-    removed = [old[k] for k in old if k not in new]
-    modified = [(old[k], new[k]) for k in old if k in new and old[k] != new[k]]
-    unchanged = [new[k] for k in new if k in old and old[k] == new[k]]
-    for k in sorted(old.keys() & new.keys()):
+    added = [new[k] for k in sorted(set(new.keys()) - set(old.keys()))]
+    removed = [old[k] for k in sorted(set(old.keys()) - set(new.keys()))]
+    modified, unchanged = [], []
+
+    for k in sorted(set(old.keys()) & set(new.keys())):
         if old[k].sha256 != new[k].sha256:
             modified.append((old[k], new[k]))
         else:
             unchanged.append(new[k])
+
     return Diff(added, removed, modified, unchanged)
 
 def print_report(diff: Diff) -> int:

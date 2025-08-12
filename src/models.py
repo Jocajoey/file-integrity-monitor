@@ -13,7 +13,7 @@ from typing import Dict, List, Tuple
 class FileRecord:
     """Data class to store file metadata and hash."""
     path: str
-    hash: str
+    size: int
     mtime: float
     sha256: str
     

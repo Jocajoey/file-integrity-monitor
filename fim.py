@@ -52,23 +52,12 @@ def cmd_update(args):
 def main():
     """Main entry point for the CLI."""
     args = parse_args()
-    global root, db, workers, ignored_dirs
-    root = args.root.resolve()
-    db = args.db.resolve()
-    workers = args.workers
-    ignored_dirs = args.ignore_dirs
+    if args.cmd == "init":
+        return cmd_init(args.root, args.db, args.workers, args.ignore_dirs)
+    if args.cmd == "scan":
+        return cmd_scan(args.root, args.db, args.workers, args.ignore_dirs)
+    if args.cmd == "update":
+        return cmd_update(args.root, args.db, args.workers, args.ignore_dirs)
 
-    if not root.is_dir():
-        print(f"[error] Root directory does not exist: {root}", file=sys.stderr)
-        return 1
-
-    try:
-        if args.cmd == "init":
-            return cmd_init(args)
-        elif args.cmd == "scan":
-            return cmd_scan(args)
-        elif args.cmd == "update":
-            return cmd_update(args)
-    except Exception as e:
-        print(f"[error] {e}", file=sys.stderr)
-        return 1
+if __name__ == "__main__":
+    sys.exit(main())

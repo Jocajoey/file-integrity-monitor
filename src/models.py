@@ -10,20 +10,20 @@ from dataclasses import dataclass
 from typing import Dict, List, Tuple
 
 @dataclass(frozen=True )
-class Filerecord:
+class FileRecord:
     """Data class to store file metadata and hash."""
     path: str
     hash: str
     mtime: float
     sha256: str
     
-Manifest = Dict[str, Filerecord] #map relative paths to Filerecords
+Manifest = Dict[str, FileRecord] #map relative paths to Filerecords
     
 @dataclass
 class Diff:
         """Data class to store differences between two file records."""
-        added: List[Filerecord]
-        removed: List[Filerecord]
-        modified: List[Tuple[Filerecord, Filerecord]]
-        unchanged: List[Filerecord]
+        added: List[FileRecord]
+        removed: List[FileRecord]
+        modified: List[Tuple[FileRecord, FileRecord]]
+        unchanged: List[FileRecord]
         
